@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <button id="showUserForm"></button>
-    <form action="submit" methods="POST" class="hidden">
-        <h2>Create a user</h2>
-        <label for="firstName"> First Name</label>
+    <h2>Create a user</h2>
+    <form action="/users/new" methods="POST">
+        <label for="first_name"> First Name</label>
         <input name="firstName"type="text">
-        <label for="lastName"> Last Name</label>
+
+        <label for="last_name"> Last Name</label>
         <input name="lastName"type="text">
+
         <label for="imageurl"> Image URL</label>
         <input name="imageurl"type="url">
-        <button> </button>
+        <button>Add</button>
     </form>
 {% endblock %}

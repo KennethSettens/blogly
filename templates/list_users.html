@@ -1,4 +1,4 @@
-{% extends base.html %}
+{% extends "base.html" %}
 
 {% block content %}
     <h1>Users</h1>
@@ -10,4 +10,6 @@
         </li>
     {% endfor%}
     </ol>
+
+    <a href="/users/new"> Create User</a>    
 {% endblock %}
