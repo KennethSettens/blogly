@@ -1,19 +1,15 @@
-{% extends base.html%}
+{% extends "base.html"%}
 
 {% block content%}
     <img src="" alt="">
-    <h1 name="name"> {{name}}</h1>
-    <button> edit </button>
-    <button> delete </button>
+    <h1 name="name"> {{ user.FirstName, user.LastName }}</h1>
+    
+    <form method="POST" action="{{ url_for('edit_user', user_id=user.id) }}">
+        <button type="submit">Edit</button> 
+    </form>
 
-    <!-- <form action="" methods="PUT" class="hidden">
-        <h2>Create a user</h2>
-        <label for="firstName"> First Name</label>
-        <input name="firstName"type="text">
-        <label for="lastName"> Last Name</label>
-        <input name="lastName"type="text">
-        <label for="imageurl"> Image URL</label>
-        <input name="imageurl"type="url">
-        <button> Save </button>
-    </form> -->
+    <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
+        <button type="submit">Delete</button>
+    </form>
+
 {% endblock%}

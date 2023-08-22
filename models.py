@@ -15,4 +15,4 @@ class User(db.Model):
     FirstName = db.Column(db.String(20))
     LastName = db.Column(db.String(20))
     imageurl = db.Column(db.String) 
-    
+

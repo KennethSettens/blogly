@@ -6,7 +6,7 @@
     <ol>
     {% for user in users %}
         <li> 
-            <a href="userDetails.html">{{ user.firstName, user.lastName }}</a> 
+            <a href="/users/{{ user.id }}">{{ user.FirstName, user.LastName }}</a> 
         </li>
     {% endfor%}
     </ol>

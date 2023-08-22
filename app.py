@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from models import db, connect_db, User
 
 app = Flask(__name__)
@@ -19,12 +19,14 @@ def index():
 @app.route('/users')
 def list_users():
     users = User.query.all()
+    print(users)
     return render_template('list_users.html', users=users)
 
 
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
-    return render_template('userDetails.html', user_id=user_id)
+    user = User.query.get(user_id)
+    return render_template('userDetails.html', user=user)
 
 
 @app.route('/users/new', methods=['GET'])
@@ -34,9 +36,9 @@ def new_user():
 
 @app.route('/users/new', methods=['POST'])
 def add_user():
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
-    image_url = request.form.get('imageurl')
+    first_name = request.form['firstName']
+    last_name = request.form['lastName']
+    image_url = request.form['imageurl']
 
     new_user = User(
         FirstName=first_name, LastName=last_name, imageurl=image_url)
@@ -46,18 +48,44 @@ def add_user():
     return redirect('/users')    
 
 
-# @app.route('/users/<int:user_id>/edit', methods=['GET'])
-# def edit_user(user_id):
-#     return render_template('edit_user.html', user_id=user_id)
+@app.route('/users/<int:user_id>/edit')
+def edit_user(user_id):
+    return render_template('userDetails.html', user_id=user_id)
+
+# GET /users/[user-id]
+# Show information about the given user.
+
+# Have a button to get to their edit page, and to delete the user.
 
 
-# @app.route('/users/<int:user_id>/edit', methods=['POST'])
-# def update_user(user_id):
-#     return redirect(url_for('show_user', user_id=user_id))
 
 
-# @app.route('/users/<int:user_id>/delete', methods=['POST'])
-# def delete_user(user_id):
-#     return redirect(url_for('list_users'))
+
+
+
+@app.route('/users/<int:user_id>/edit', methods=['POST'])
+def update_user(user_id):
+    user = User.query.get_or_404(user_id)
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.image_url = request.form['image_url']
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect("/users")
+
+
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    user_to_delete = User.query.get(user_id)  
+    if user_to_delete:
+        db.session.delete(user_to_delete)  
+        db.session.commit() 
+        print("User deleted successfully")
+    else:
+        print("User not found")
+    
+    return redirect('/users')
 
 

@@ -1,0 +1,18 @@
+{% extends "base.html"%}
+
+{% block content %}
+<form action="" methods="PUT" class="hidden">
+    <h2>Edit User</h2>
+
+    <label for="firstName"> First Name</label>
+    <input name="firstName"type="text">
+
+    <label for="lastName"> Last Name</label>
+    <input name="lastName"type="text">
+
+    <label for="imageurl"> Image URL</label>
+    <input name="imageurl"type="url">
+    <button> cancle </button>
+    <button> Save </button>
+</form>
+{% endblock %}
