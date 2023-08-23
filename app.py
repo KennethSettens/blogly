@@ -48,23 +48,14 @@ def add_user():
     return redirect('/users')    
 
 
-@app.route('/users/<int:user_id>/edit')
-def edit_user(user_id):
-    return render_template('userDetails.html', user_id=user_id)
-
-# GET /users/[user-id]
-# Show information about the given user.
-
-# Have a button to get to their edit page, and to delete the user.
-
-
-
-
-
+@app.route('/users/<int:user_id>/edit', methods=["GET"])
+def users_edit(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template('editUser.html', user=user)
 
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
-def update_user(user_id):
+def users_update(user_id):
     user = User.query.get_or_404(user_id)
     user.first_name = request.form['first_name']
     user.last_name = request.form['last_name']

@@ -1,18 +1,18 @@
 {% extends "base.html"%}
 
 {% block content %}
-<form action="" methods="PUT" class="hidden">
+<form  method="POST">
     <h2>Edit User</h2>
 
     <label for="firstName"> First Name</label>
-    <input name="firstName"type="text">
+    <input name="firstName"type="text" value="{{user.FirstName}}">
 
     <label for="lastName"> Last Name</label>
-    <input name="lastName"type="text">
+    <input name="lastName"type="text" value="{{user.LastName}}">
 
     <label for="imageurl"> Image URL</label>
-    <input name="imageurl"type="url">
-    <button> cancle </button>
+    <input name="imageurl"type="url" value="{{user.imageurl}}">
+    <button> cancel </button>
     <button> Save </button>
 </form>
 {% endblock %}
