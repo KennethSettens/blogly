@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -64,7 +64,7 @@ def users_update(user_id):
     db.session.add(user)
     db.session.commit()
 
-    return redirect("/users")
+    return redirect('/users')
 
 
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
@@ -80,3 +80,32 @@ def delete_user(user_id):
     return redirect('/users')
 
 
+@app.route('/users/<int:user_id>/posts/new')
+def showAddPostForm(user_id):
+    user = User.query.get(user_id)
+    return render_template("makePost.html", user=user)
+
+@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+def handleAddPostForm(user_id):
+    user = User.query.get(user_id)
+    title = request.form.get('title')
+    content = request.form.get('content')
+    
+    new_post = Post(title=title, content=content)
+
+    user.posts.append(new_post)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return render_template("userDetails.html", user=user)
+
+
+@app.route('/posts/<int:post_id>')
+def getPostDetails(post_id):
+    post = Post.query.get(post_id)
+    user_id = post.user_id
+
+    return render_template("postDetails.html", post=post, user_id=user_id)
+
+#args to post details aren't being recognnized as valid values.
