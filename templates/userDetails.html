@@ -4,10 +4,6 @@
     <img src="" alt="">
     <h1 name="name"> {{ user.FirstName, user.LastName }}</h1>
     
-    <form method="POST" action="{{ url_for('users_edit', user_id=user.id) }}">
-        <button type="submit">Edit</button> 
-    </form>
-
     <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST">
         <button type="submit">Delete</button>
     </form>

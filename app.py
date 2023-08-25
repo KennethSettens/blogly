@@ -48,12 +48,6 @@ def add_user():
     return redirect('/users')    
 
 
-@app.route('/users/<int:user_id>/edit', methods=["GET"])
-def users_edit(user_id):
-    user = User.query.get_or_404(user_id)
-    return render_template('editUser.html', user=user)
-
-
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def users_update(user_id):
     user = User.query.get_or_404(user_id)
@@ -80,6 +74,7 @@ def delete_user(user_id):
     return redirect('/users')
 
 
+#assignment 2 starts on 84
 @app.route('/users/<int:user_id>/posts/new')
 def showAddPostForm(user_id):
     user = User.query.get(user_id)
@@ -104,8 +99,34 @@ def handleAddPostForm(user_id):
 @app.route('/posts/<int:post_id>')
 def getPostDetails(post_id):
     post = Post.query.get(post_id)
-    user_id = post.user_id
+    user = User.query.get(post.user_id)
+    return render_template("postDetails.html", post=post, user=user)
 
-    return render_template("postDetails.html", post=post, user_id=user_id)
 
-#args to post details aren't being recognnized as valid values.
+@app.route('/posts/<int:post_id>/edit')
+def showEditPost(post_id):
+    post = Post.query.get(post_id)
+    return render_template("editPost.html", post=post)
+
+@app.route('/posts/<int:post_id>/edit', methods=['POST'])
+def editPost(post_id):
+    post = Post.query.get(post_id)
+    post.title = request.form.get('title')
+    post.content = request.form['content']
+
+    db.session.add(post)
+    db.session.commit()
+    return redirect(f'/users/{post.user_id}')
+
+
+
+@app.route('/posts/<int:post_id>/delete', methods=["POST"])
+def posts_destroy(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f"/users/{post.user_id}")
+
+#assignment 3 after this
